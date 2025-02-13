@@ -13,10 +13,12 @@ async function handleGenerateNewShortURL(req, res){
         visitHistory: [],
 
     })
-
-    return res.status(201).json({id: shortId,
-        createdAt: newURL.createdAt
-    });
+    return res.render('home', {
+        id : shortId,
+    })
+    // return res.status(201).json({id: shortId,
+    //     // createdAt: newURL.createdAt
+    // });
 }
 
 async function handleGetAnalytics (req, res){

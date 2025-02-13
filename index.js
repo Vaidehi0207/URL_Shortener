@@ -1,19 +1,43 @@
 const express = require('express');
-
+const path = require('path');
 const { connectToMongoDB } = require('./connect');
 const urlRoute = require('./routes/url');
 const URL = require('./models/url');
+const staticRoute = require('./routes/staticRouter')
 const app = express();
 const PORT = 8001;
 
 connectToMongoDB('mongodb://localhost:27017/short-url')
 .then(() => console.log('Connected to MongoDB'))
 
+// set the view engine to ejs
+// ejs files basically html files hoti h 
+app.set("view engine", "ejs");
+// aur express ko ye bhi bta diya ki humara view engine ejs h 
+// hum in lines se ye bta rhe h ki jo bhi html files h wo views folder me h 
+app.set('views', path.resolve('./views'));
+
 app.use(express.json());
 
-app.use('/url', urlRoute);
+app.use(express.urlencoded({ extended: false }))
 
-app.get('/:shortId', async(req, res) => {
+app.use('/url', urlRoute);
+// agar koi bhi cheez '/' se use hoti h toh staticRoute ko render krna h
+app.use('/', staticRoute);
+
+// app.get('/test', async(req, res) => {
+//     // this fetches all the documents from the URL collection in the database
+//     const allURLs = await URL.find({});
+//     // humne bta diya ki home wala view render krna h 
+
+//     // use res.render to load up an ejs view file
+
+//     return res.render('home', {
+//         urls: allURLs,
+//     });
+// });
+
+app.get('/url/:shortId', async(req, res) => {
     const shortId = req.params.shortId;
     const entry = await URL.findOneAndUpdate(
         {

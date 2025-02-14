@@ -1,5 +1,5 @@
 const express = require('express');
-// const URL = require
+const URL = require('../models/url'); 
 const router = express.Router();
 
 router.get('/', async(req, res) => {
@@ -7,6 +7,6 @@ router.get('/', async(req, res) => {
     return res.render('home', {
         urls : allurls
     });
-});
+})
 
 module.exports = router;

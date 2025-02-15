@@ -1,9 +1,14 @@
 const express = require('express');
 const path = require('path');
 const { connectToMongoDB } = require('./connect');
+const { restrictToLoggedinUserOnly} = require('./middlewares/auth');
 const urlRoute = require('./routes/url');
+const cookieParser = require('cookie-parser');
+
 const URL = require('./models/url');
 const staticRoute = require('./routes/staticRouter')
+const userRoute = require('./routes/user')
+
 const app = express();
 const PORT = 8001;
 
@@ -20,10 +25,14 @@ app.set('views', path.resolve('./views'));
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: false }))
+app.use(cookieParser());
 
-app.use('/url', urlRoute);
+// ye middleware tbhi chalega jb user logged in hoga 
+app.use('/url', restrictToLoggedinUserOnly,urlRoute);
 // agar koi bhi cheez '/' se use hoti h toh staticRoute ko render krna h
 app.use('/', staticRoute);
+
+app.use('/user', userRoute);
 
 // app.get('/test', async(req, res) => {
 //     // this fetches all the documents from the URL collection in the database

@@ -14,6 +14,11 @@ const urlSchema = new mongoose.Schema({
     },
     // visitHistory ek array h jisme visit ki history store hogi aur usme objects honge
     visitHistory: [ { timeStamp: {type: Number } }],
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
+        
+    }
 },
     {timestamps: true},
 )

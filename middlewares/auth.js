@@ -18,6 +18,18 @@ async function restrictToLoggedinUserOnly(req, res, next){
     next();
 }
 
+// ye function force ni kr rha h ki user logged in ho
+// ye bas check kr rha h ki user logged in h ya nahi
+async function checkAuth(req, res, next){
+    const userUid = req.cookies?.uid;
+    
+    const user = getUser(userUid);
+
+    req.user = user;
+    next();
+}
+
 module.exports = {
     restrictToLoggedinUserOnly,
+    checkAuth,
 }

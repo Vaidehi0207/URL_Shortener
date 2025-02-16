@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const { connectToMongoDB } = require('./connect');
-const { restrictToLoggedinUserOnly} = require('./middlewares/auth');
+const { restrictToLoggedinUserOnly, checkAuth} = require('./middlewares/auth');
 const urlRoute = require('./routes/url');
 const cookieParser = require('cookie-parser');
 
@@ -30,7 +30,7 @@ app.use(cookieParser());
 // ye middleware tbhi chalega jb user logged in hoga 
 app.use('/url', restrictToLoggedinUserOnly,urlRoute);
 // agar koi bhi cheez '/' se use hoti h toh staticRoute ko render krna h
-app.use('/', staticRoute);
+app.use('/',  checkAuth, staticRoute);
 
 app.use('/user', userRoute);
 

@@ -25,9 +25,10 @@ async function handleUserLogin(req, res) {
         });
 
         // agar user mil gya toh uska session start kr denge
-        const sessionId = uuidv4();
-        setUser(sessionId,user);
-        res.cookie('uid', sessionId);
+        // const sessionId = uuidv4();
+
+        const token = setUser(user);
+        res.cookie('uid', token);
         // else usko redirect kr denge home page pe 
         return res.redirect('/');
 }

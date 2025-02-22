@@ -1,11 +1,12 @@
 const { getUser} = require('../service/auth')
 
 async function restrictToLoggedinUserOnly(req, res, next){
-    const userUid = req.cookies?.uid;
-    
+    // const userUid = req.cookies?.uid;
+    const userUid = req.headers['Authorization']
     // agar user ki uid nahi h toh usko login page pe redirect kr do
     if(!userUid)
         return res.redirect('/login');
+    const token = userUid.split('Bearer ')[0] //Bearer [iusadgqwiu283]
     const user = getUser(userUid);
 
     // agar user nahi mila toh usko login page pe redirect kr do

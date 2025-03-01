@@ -19,6 +19,7 @@ async function handleUserLogin(req, res) {
     const { email, password } = req.body;
     // ek user create kr rhe h 
     const user = await User.findOne({email, password})
+    // agar user nhi mila toh hum usko login page pe redirect kr denge
     if(!user)
         return res.render('login', {
             error: "Invalid Username or Password",
